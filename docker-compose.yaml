@@ -1,0 +1,13 @@
+version: "3.2"
+services:
+  mysql:
+    image: mysql:5.7.26
+    container_name: mysql
+    environment:
+      - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
+      - "MYSQL_DATABASE=jetbook"
+      - "MYSQL_USER=root"
+      - "MYSQL_PASSWORD=password"
+      - "MYSQL_ROOT_PASSWORD=password"
+    ports:
+      - "3306:3306"
