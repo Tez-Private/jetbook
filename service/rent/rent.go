@@ -24,9 +24,7 @@ func Create(ctx context.Context, params *CreateParams) (*model.Rents, error) {
 
 	book := &model.Books{}
 	recordNotFound := db.Mysql.Table("books").Where("ID=? AND Rent=0", rent.BookID).First(&book).RecordNotFound()
-
 	if recordNotFound == true {
-		log.Println(recordNotFound)
 		return nil, fmt.Errorf("This Book already has been rended")
 	}
 
@@ -75,30 +73,32 @@ func Get(id string) (model.Rents, error) {
 }
 
 //Return is
-func Return(ctx context.Context, params *UpdateParams, id string) (*model.Rents, error) {
+func Return(ctx context.Context, id string) (*model.Rents, error) {
 	rent := &model.Rents{}
 
-	err := db.Mysql.Table("rents").Where("ID=?", id).Update(&rent.BackCheck, 1).Error
-	if err != nil {
-		return nil, err
-	}
-
-	err = db.Mysql.Where("ID=?", id).First(&rent).Error
+	err := db.Mysql.Table("rents").Where("ID=?", id).First(&rent).Scan(&rent).Error
 	if err != nil {
 		log.Println("nothing")
 		return rent, err
 	}
 
+	err = db.Mysql.Table("rents").Where("ID=?", id).Update("back_check", 1).Error
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.Mysql.Table("books").Where("ID=?", rent.BookID).Update("rent", 0).Error
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
 	return rent, err
 }
 
-//Update is
-func Update(ctx context.Context, params *UpdateParams, id string) (*model.Rents, error) {
+//ChangeReturnDate is
+func ChangeReturnDate(ctx context.Context, params *UpdateParams, id string) (*model.Rents, error) {
 	rent := &model.Rents{
-		BookID:             params.BookID,
-		UserID:             params.UserID,
 		ExpectedReturnDate: params.ExpectedReturnDate,
-		BackCheck:          params.BackCheck,
 	}
 
 	err := db.Mysql.Table("rents").Where("ID=?", id).Update(&rent).Error

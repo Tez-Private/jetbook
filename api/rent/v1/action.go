@@ -51,34 +51,11 @@ func Get(ctx *gin.Context) {
 
 //Return PATCH api/v1/rents/[id]
 func Return(ctx *gin.Context) {
-	var params rent.UpdateParams
 	id := ctx.Params.ByName("id")
 
-	err := ctx.BindJSON(&params)
-	if err != nil {
-		api.RespondJSON(ctx, http.StatusNotFound, err)
-		return
-	}
+	log.Println(id)
 
-	result, err := rent.Update(ctx, &params, id)
-	if err != nil {
-		api.RespondJSON(ctx, http.StatusNotFound, result)
-		return
-	}
-	api.RespondJSON(ctx, http.StatusOK, result)
-}
-
-//Update PATCH api/v1/rents/[id]
-func Update(ctx *gin.Context) {
-	var params rent.UpdateParams
-	id := ctx.Params.ByName("id")
-	err := ctx.BindJSON(&params)
-	if err != nil {
-		api.RespondJSON(ctx, http.StatusNotFound, err)
-		return
-	}
-
-	result, err := rent.Update(ctx, &params, id)
+	result, err := rent.Return(ctx, id)
 	if err != nil {
 		api.RespondJSON(ctx, http.StatusNotFound, result)
 		return
@@ -87,6 +64,24 @@ func Update(ctx *gin.Context) {
 }
 
 /*
+//ChangeReturnDate PATCH api/v1/rents/[id]
+func ChangeReturnDate(ctx *gin.Context) {
+	var params rent.UpdateParams
+	id := ctx.Params.ByName("id")
+	err := ctx.BindJSON(&params)
+	if err != nil {
+		api.RespondJSON(ctx, http.StatusNotFound, err)
+		return
+	}
+
+	result, err := rent.ChangeReturnDate(ctx, &params, id)
+	if err != nil {
+		api.RespondJSON(ctx, http.StatusNotFound, result)
+		return
+	}
+	api.RespondJSON(ctx, http.StatusOK, result)
+}
+
 //Delete DELETE api/v1/rents/[id]
 func Delete(ctx *gin.Context) {
 	id := ctx.Params.ByName("id")

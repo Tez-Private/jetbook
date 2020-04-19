@@ -34,6 +34,6 @@ func RouteRent(router *gin.RouterGroup) {
 	rentRoute.GET("", rent.GetAll)             // GET api/v1/rents
 	rentRoute.GET(":id", rent.Get)             // GET api/v1/rents/[id]
 	rentRoute.PATCH(":id/return", rent.Return) // PATCH api/v1/rents/[id]/return
-	rentRoute.PATCH(":id", rent.Update)        // PATCH api/v1/rents/[id]
+	//rentRoute.PATCH(":id/changereturndate", rent.ChangeReturnDate) // PATCH api/v1/[id]/changereturndate
 	//rentRoute.DELETE(":id", rent.Delete)       // DELETE api/v1/rents/[id]
 }

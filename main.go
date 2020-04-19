@@ -20,10 +20,12 @@ func main() {
 		&model.Rents{},
 		&model.Books{}, //Need    ALTER TABLE books CONVERT TO CHARACTER SET utf8mb4;
 	)
-	/*
-		mysql.Model(&model.Rents{}).AddForeignKey("book_id", "books(id)", "RESTRICT", "RESTRICT")
-		mysql.Model(&model.Rents{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
-	*/
+	mysql.Model(&model.Rents{}).AddForeignKey("book_id", "books(id)", "RESTRICT", "RESTRICT")
+	mysql.Model(&model.Rents{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+
+	mysql.Exec("ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4;")
+	mysql.Exec("ALTER TABLE books CONVERT TO CHARACTER SET utf8mb4;")
+	mysql.Exec("ALTER TABLE rents CONVERT TO CHARACTER SET utf8mb4;")
 
 	api := gin.New()
 	api.Use(gin.Logger())

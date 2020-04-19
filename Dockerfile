@@ -1,19 +1,17 @@
 FROM golang:1.12.4-alpine3.9 as build
 
-#WORKDIR go/src/github.com/Tez-Private/jetbook
+RUN mkdir -p /go/src/github.com/Tez-Private/jetbook
+WORKDIR /go/src/github.com/Tez-Private/jetbook
 
-COPY ["./", "./"]
+ADD . .
 
 ENV PATH /go/bin:$PATH
 
-ENV GOPATH $HOME/go
-
-#RUN apk add --update --no-cache git make gcc g++ dep  && \
-#    make setup && \
-#    go build -o jetbook
-RUN go build -o jetbook
+RUN apk add --update --no-cache git make gcc g++ dep  && \
+    make setup && \
+    go build .
 
 FROM gcr.io/distroless/base-debian10
 
-COPY --from=build go/src/github.com/Tez-Private/jetbook/jetbook /
-CMD ["jetbook"]
+COPY --from=build /go/src/github.com/Tez-Private/jetbook/jetbook .
+ENTRYPOINT ["./jetbook"]
