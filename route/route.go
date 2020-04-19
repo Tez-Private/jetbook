@@ -11,4 +11,5 @@ func V1(api *gin.Engine) {
 	router := api.Group("api/v1")
 	v1route.RouteUser(router) // api/v1/users
 	v1route.RouteBook(router) // api/v1/books
+	v1route.RouteRent(router) // api/v1/rents
 }

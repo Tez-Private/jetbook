@@ -47,7 +47,6 @@ func Create(ctx *gin.Context) {
 	api.RespondJSON(ctx, http.StatusCreated, result)
 }
 
-/*
 //GetAll GET api/v1/books
 func GetAll(ctx *gin.Context) {
 	result, err := book.GetAll(ctx)
@@ -58,10 +57,10 @@ func GetAll(ctx *gin.Context) {
 	api.RespondJSON(ctx, http.StatusOK, result)
 }
 
-//Get GET api/v1/books/[id]
+//Get GET api/v1/books/[isbn]
 func Get(ctx *gin.Context) {
-	id := ctx.Params.ByName("id")
-	result, err := book.Get(id)
+	isbn := ctx.Params.ByName("isbn")
+	result, err := book.Get(isbn)
 	if err != nil {
 		api.RespondJSON(ctx, http.StatusNotFound, result)
 		return
@@ -69,32 +68,14 @@ func Get(ctx *gin.Context) {
 	api.RespondJSON(ctx, http.StatusOK, result)
 }
 
-//Update PATCH api/v1/books/[id]
-func Update(ctx *gin.Context) {
-	var params book.UpdateParams
-	id := ctx.Params.ByName("id")
-	err := ctx.BindJSON(&params)
-	if err != nil {
-		api.RespondJSON(ctx, http.StatusNotFound, err)
-		return
-	}
-
-	result, err := book.Update(ctx, &params, id)
-	if err != nil {
-		api.RespondJSON(ctx, http.StatusNotFound, result)
-		return
-	}
-	api.RespondJSON(ctx, http.StatusOK, result)
-}
-
-//Delete DELETE api/v1/books/[id]
+//Delete DELETE api/v1/books/[isbn]
 func Delete(ctx *gin.Context) {
-	id := ctx.Params.ByName("id")
-	err := book.Delete(ctx, id)
+	isbn := ctx.Params.ByName("isbn")
+
+	err := book.Delete(ctx, isbn)
 	if err != nil {
 		log.Println(err)
 		api.RespondJSON(ctx, http.StatusNotFound, "Denied")
 	}
 	api.RespondJSON(ctx, http.StatusNoContent, "Not Content")
 }
-*/

@@ -31,7 +31,6 @@ func Create(ctx context.Context, data *GoogleBooksAPI) (*model.Books, error) {
 }
 
 //GetAll is SELET * FROM users all
-/*
 func GetAll(ctx context.Context) ([]model.Books, error) {
 	var books []model.Books
 
@@ -42,13 +41,12 @@ func GetAll(ctx context.Context) ([]model.Books, error) {
 	}
 	return books, err
 }
-*/
 
-//Get is SELET * FROM books where id = x;
-func Get(id string) (model.Books, error) {
+//Get is SELET * FROM books where isbn = x;
+func Get(isbn string) (model.Books, error) {
 	var book model.Books
 
-	err := db.Mysql.Where("ID=?", id).First(&book).Error
+	err := db.Mysql.Where("isbn=?", isbn).First(&book).Error
 	if err != nil {
 		log.Println("Nothing")
 		return book, err
@@ -56,29 +54,19 @@ func Get(id string) (model.Books, error) {
 	return book, err
 }
 
-//Update is Book update
-func Update(ctx context.Context, params *UpdateParams, id string) (*model.Books, error) {
-	book := &model.Books{
-		Title: params.Title,
-	}
-
-	err := db.Mysql.Table("books").Where("ID=?", id).Update(&book).Error
-	if err != nil {
-		return nil, err
-	}
-
-	err = db.Mysql.Where("ID=?", id).First(&book).Error
-	if err != nil {
-		return nil, err
-	}
-
-	return book, err
-}
-
 // Delete is
-func Delete(ctx context.Context, id string) error {
+func Delete(ctx context.Context, isbn string) error {
+	var searchID model.Books
 	var book model.Books
-	err := db.Mysql.Delete(&book, id).Error
+
+	//err := db.Mysql.Where("isbn=?", isbn).Delete(&book).Error
+	err := db.Mysql.Where("isbn=?", isbn).First(&searchID).Error
+	if err != nil {
+		log.Println()
+		return err
+	}
+
+	err = db.Mysql.Delete(&book, searchID.ID).Error
 	if err != nil {
 		log.Println()
 		return err

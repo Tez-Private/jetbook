@@ -12,13 +12,6 @@ type CreateParams struct {
 	Rent int `json:"rent"`
 }
 
-type UpdateParams struct {
-	Title string `json:"title" gorm:"not null"`
-	Isbn  string `json:"isbn"`
-
-	Rent int `json:"rent"`
-}
-
 //GoogleBooksAPI Request
 type GoogleBooksAPI struct {
 	Kind       string `json:"kind"`

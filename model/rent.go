@@ -9,10 +9,9 @@ type Rents struct {
 	UserID int
 
 	ExpectedReturnDate time.Time `json:"expected_return_date"`
-	ReturnDate         time.Time `json:"return_date"`
 	BackCheck          int       `json:"backcheck"`
-	Model
 
+	Model
 	Books Books
 	Users Users
 }
